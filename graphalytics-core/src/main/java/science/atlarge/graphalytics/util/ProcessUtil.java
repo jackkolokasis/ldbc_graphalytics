@@ -55,7 +55,7 @@ public class ProcessUtil {
 
             List<String> command = new ArrayList<>();
             command.add(jvm);
-            command.add("-Xmx"+ setMaxMemory());
+            command.add("-Xmx"+ setMaxMemory() + " " + setJVMOptions());
             command.add(mainClass.getCanonicalName());
             command.addAll(args);
 
@@ -195,6 +195,25 @@ public class ProcessUtil {
             return benchmarkSuiteMaxMemory;
         }
     }
+    
+  private static String setJVMOptions() {
 
+    String jvmOptions = null;
+    String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
+    String JVM_OPTIONS = "benchmark.runner.extra-jvm-opts";
 
+    try {
+      Configuration benchmarkConfiguration = ConfigurationUtil.loadConfiguration(BENCHMARK_PROPERTIES_FILE);
+      jvmOptions = ConfigurationUtil.getString(benchmarkConfiguration, JVM_OPTIONS);
+
+      if (jvmOptions.trim().isEmpty()) {
+        return null;
+      }
+
+      return jvmOptions;
+    } catch (Exception e) {
+      LOG.error("Failed to found configuration " + JVM_OPTIONS);
+      return null;
+    }
+  }
 }
