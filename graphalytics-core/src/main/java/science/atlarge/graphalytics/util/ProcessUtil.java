@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;  
 
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
@@ -56,6 +57,7 @@ public class ProcessUtil {
             List<String> command = new ArrayList<>();
             command.add(jvm);
             command.add("-Xmx"+ setMaxMemory());
+            command.addAll(setJVMOptions());
             command.add(mainClass.getCanonicalName());
             command.addAll(args);
 
@@ -196,5 +198,34 @@ public class ProcessUtil {
         }
     }
 
+  private static List<String> setJVMOptions() {
 
+    String jvmOptions = null;
+    String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
+    String JVM_OPTIONS = "benchmark.runner.extra-jvm-opts";
+
+    try {
+      Configuration benchmarkConfiguration = ConfigurationUtil.loadConfiguration(BENCHMARK_PROPERTIES_FILE);
+      jvmOptions = ConfigurationUtil.getString(benchmarkConfiguration, JVM_OPTIONS);
+      LOG.info("JVM Opts " + jvmOptions);
+
+      if (jvmOptions.trim().isEmpty()) {
+        LOG.info("JVM Opts " + jvmOptions);
+        return null;
+      }
+
+      List<String> lst = new ArrayList<String>();
+      StringTokenizer token = new StringTokenizer(jvmOptions, " ");
+
+      while (token.hasMoreTokens()) {
+        lst.add(token.nextToken());
+      }
+
+      return lst;
+
+    } catch (Exception e) {
+      LOG.error("Failed to found configuration " + JVM_OPTIONS);
+      return null;
+    }
+  }
 }
