@@ -56,8 +56,8 @@ public class ProcessUtil {
 
             List<String> command = new ArrayList<>();
             command.add(jvm);
-            command.add("-Xmx"+ setMaxMemory());
             command.addAll(setJVMOptions());
+            command.add("-Xmx"+ setMaxMemory());
             command.add(mainClass.getCanonicalName());
             command.addAll(args);
 
