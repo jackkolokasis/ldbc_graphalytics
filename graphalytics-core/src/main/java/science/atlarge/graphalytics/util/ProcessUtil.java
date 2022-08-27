@@ -237,7 +237,7 @@ public class ProcessUtil {
 
     try {
       Configuration benchmarkConfiguration = ConfigurationUtil.loadConfiguration(BENCHMARK_PROPERTIES_FILE);
-      jvmPath = ConfigurationUtil.getString(benchmarkConfiguration, JVM_OPTIONS);
+      jvmPath = ConfigurationUtil.getString(benchmarkConfiguration, JVM_PATH);
       LOG.info("JVM Path " + jvmPath);
 
       if (jvmPath.trim().isEmpty()) {
