@@ -49,7 +49,7 @@ public class ProcessUtil {
 
         Process process = null;
         try {
-            String jvm = "/home1/public/kolokasis/jdk8u/teracache/jdk8u345/build/linux-x86_64-normal-server-release/jdk/bin/java";
+            String jvm = setJavaPath();
             //String jvm = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
             String classpath = System.getProperty("java.class.path");
 
