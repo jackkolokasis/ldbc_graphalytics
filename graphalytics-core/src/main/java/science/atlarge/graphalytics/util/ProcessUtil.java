@@ -231,7 +231,7 @@ public class ProcessUtil {
   
   private static String setJavaPath() {
 
-    String javaPath = null;
+    String jvmPath = null;
     String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
     String JVM_PATH = "benchmark.runner.jvm-path";
 
