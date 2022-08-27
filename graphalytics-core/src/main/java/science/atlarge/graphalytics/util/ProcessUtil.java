@@ -56,8 +56,8 @@ public class ProcessUtil {
 
             List<String> command = new ArrayList<>();
             command.add(jvm);
-            command.addAll(setJVMOptions());
             command.add("-Xmx"+ setMaxMemory());
+            command.addAll(setJVMOptions());
             command.add(mainClass.getCanonicalName());
             command.addAll(args);
 
@@ -225,6 +225,30 @@ public class ProcessUtil {
 
     } catch (Exception e) {
       LOG.error("Failed to found configuration " + JVM_OPTIONS);
+      return null;
+    }
+  }
+  
+  private static String setJavaPath() {
+
+    String javaPath = null;
+    String BENCHMARK_PROPERTIES_FILE = "benchmark.properties";
+    String JVM_PATH = "benchmark.runner.jvm-path";
+
+    try {
+      Configuration benchmarkConfiguration = ConfigurationUtil.loadConfiguration(BENCHMARK_PROPERTIES_FILE);
+      jvmPath = ConfigurationUtil.getString(benchmarkConfiguration, JVM_OPTIONS);
+      LOG.info("JVM Path " + jvmPath);
+
+      if (jvmPath.trim().isEmpty()) {
+        LOG.info("JVM Path " + jvmPath);
+        return null;
+      }
+
+      return jvmPath;
+
+    } catch (Exception e) {
+      LOG.error("Failed to found configuration " + JVM_PATH);
       return null;
     }
   }
